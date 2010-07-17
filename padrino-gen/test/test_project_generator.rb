@@ -132,6 +132,13 @@ class TestProjectGenerator < Test::Unit::TestCase
       assert_match_in_file(/conf.mock_with :rr/m, '/tmp/sample_project/spec/spec_helper.rb')
     end
 
+    should "properly generate for flexmock and rspec" do 
+        buffer = silence_logger { generate(:project, 'sample_project', '--root=/tmp', '--test=rspec', '--mock=flexmock', '--script=none') }
+        assert_match(/Applying.*?flexmock.*?mock/, buffer)
+        assert_match_in_file(/gem 'flexmock'/, '/tmp/sample_project/Gemfile')
+        assert_match_in_file(/conf.mock_with :flexmock/m, '/tmp/sample_project/spec/spec_helper.rb')
+    end
+
   end
 
   context "the generator for orm components" do
